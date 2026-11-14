@@ -7,3 +7,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "SF2Extractor"
 include(":app")
+include(":desktop")
