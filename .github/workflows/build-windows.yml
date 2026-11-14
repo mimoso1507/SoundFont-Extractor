@@ -21,21 +21,18 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.9
-      - name: Build installer and portable app
-        run: gradle --no-daemon :desktop:packageExe :desktop:createDistributable
+      - name: Build installer
+        run: gradle --no-daemon :desktop:packageExe
       - name: Collect files
         shell: pwsh
         run: |
           $exe = Get-ChildItem desktop/build/compose/binaries/main/exe/*.exe | Select-Object -First 1
           Copy-Item $exe.FullName SF2-Extractor-Setup.exe
-          Compress-Archive -Path desktop/build/compose/binaries/main/app/SF2Extractor -DestinationPath SF2-Extractor-Windows-portable.zip
           Get-ChildItem SF2-Extractor-*
       - uses: actions/upload-artifact@v4
         with:
           name: SF2-Extractor-windows
-          path: |
-            SF2-Extractor-Setup.exe
-            SF2-Extractor-Windows-portable.zip
+          path: SF2-Extractor-Setup.exe
       - name: Publish release
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
@@ -43,10 +40,7 @@ jobs:
           tag_name: windows-build-${{ github.run_number }}
           name: SF2 Extractor para Windows (build ${{ github.run_number }})
           body: |
-            - **SF2-Extractor-Setup.exe**: instalador (no pide permisos de administrador).
-            - **SF2-Extractor-Windows-portable.zip**: descomprimir y abrir `SF2Extractor.exe`.
+            Descarga **SF2-Extractor-Setup.exe** y ejecútalo para instalar la app (no pide permisos de administrador). Crea un acceso directo en el escritorio y en el menú Inicio.
 
             La app se abre en pantalla completa y horizontal. **Esc** sale de pantalla completa, **F11** vuelve a entrar.
-          files: |
-            SF2-Extractor-Setup.exe
-            SF2-Extractor-Windows-portable.zip
+          files: SF2-Extractor-Setup.exe

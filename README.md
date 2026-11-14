@@ -17,9 +17,6 @@ El módulo `desktop` es la misma app para Windows, hecha con Compose for Desktop
 - **Esc** sale de pantalla completa (queda una ventana horizontal que no se puede estirar a vertical); **F11** vuelve a pantalla completa.
 - Los archivos se abren y guardan con los diálogos normales de Windows.
 
-GitHub Actions (`Build Windows EXE`) genera dos archivos y los publica en *Releases* con cada push a `main`:
-
-- `SF2-Extractor-Setup.exe`: instalador, no pide permisos de administrador.
-- `SF2-Extractor-Windows-portable.zip`: descomprimir y abrir `SF2Extractor.exe`, sin instalar.
+GitHub Actions (`Build Windows EXE`) genera el instalador `SF2-Extractor-Setup.exe` y lo publica en *Releases* con cada push a `main`. No pide permisos de administrador y crea accesos directos en el escritorio y en el menú Inicio.
 
 Para compilarlo en una PC con Windows y JDK 17: `gradle :desktop:packageExe` (o `:desktop:run` para probarlo sin empaquetar).
