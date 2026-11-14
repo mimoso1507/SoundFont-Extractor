@@ -10,6 +10,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.input.key.Key
@@ -61,6 +62,8 @@ fun main() {
                 else WindowPosition((screen.x + (screen.width - windowed.width) / 2).dp, (screen.y + (screen.height - windowed.height) / 2).dp),
                 size = if (fullscreen) DpSize(screen.width.dp, screen.height.dp) else DpSize(windowed.width.dp, windowed.height.dp),
             )
+            // onPreviewKeyEvent runs outside the window scope, so keep a handle to the AWT window here.
+            val awtWindow = remember { arrayOfNulls<ComposeWindow>(1) }
             Window(
                 onCloseRequest = ::exitApplication,
                 state = state,
@@ -73,7 +76,7 @@ fun main() {
                         e.type != KeyEventType.KeyDown -> false
                         e.key == Key.Escape && fullscreen -> { fullscreen = false; true }
                         e.key == Key.F11 -> {
-                            if (!fullscreen) screen = window.graphicsConfiguration.bounds
+                            if (!fullscreen) awtWindow[0]?.let { screen = it.graphicsConfiguration.bounds }
                             fullscreen = !fullscreen
                             true
                         }
@@ -81,6 +84,7 @@ fun main() {
                     }
                 },
             ) {
+                awtWindow[0] = window
                 DisposableEffect(window) {
                     if (fullscreen) {
                         window.bounds = Rectangle(screen)
