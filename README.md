@@ -8,3 +8,18 @@ App Android para ver, filtrar, combinar, separar y comprimir archivos SoundFont 
 - Opciones de compresión: quitar efectos, quitar moduladores, estéreo a mono, 16 bits, bajar la frecuencia de muestreo.
 
 El APK se compila con GitHub Actions y se publica en *Releases*.
+
+## Versión para Windows (.exe)
+
+El módulo `desktop` es la misma app para Windows, hecha con Compose for Desktop y usando el mismo motor SF2 que la versión Android.
+
+- Se abre en **pantalla completa** y siempre en **horizontal**.
+- **Esc** sale de pantalla completa (queda una ventana horizontal que no se puede estirar a vertical); **F11** vuelve a pantalla completa.
+- Los archivos se abren y guardan con los diálogos normales de Windows.
+
+GitHub Actions (`Build Windows EXE`) genera dos archivos y los publica en *Releases* con cada push a `main`:
+
+- `SF2-Extractor-Setup.exe`: instalador, no pide permisos de administrador.
+- `SF2-Extractor-Windows-portable.zip`: descomprimir y abrir `SF2Extractor.exe`, sin instalar.
+
+Para compilarlo en una PC con Windows y JDK 17: `gradle :desktop:packageExe` (o `:desktop:run` para probarlo sin empaquetar).
